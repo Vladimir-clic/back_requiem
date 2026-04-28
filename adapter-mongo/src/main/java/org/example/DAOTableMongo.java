@@ -19,6 +19,10 @@ public class DAOTableMongo {
         return LegumeRepository.findAll();
     }
 
+    public List<LegumeMongo> findLegumeByNom(String nom) {
+        return LegumeRepository.findLegumeByNom(nom);
+    }
+
     public List<UserMongo> findAll() {
         return UserRepository.findAll();
     }

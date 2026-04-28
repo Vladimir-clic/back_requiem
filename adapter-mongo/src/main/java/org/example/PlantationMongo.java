@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 import java.util.List;
 
-@Document(collection = "plantes_users")
+@Document(collection = "plants_users")
 public class PlantationMongo {
 
     @Id
@@ -17,10 +17,10 @@ public class PlantationMongo {
     public String user_id;
 
     @DBRef
-    public String legume_id;
+    public String plante_id;
 
     public Date date_plantation;
-    public int surface;
+    public int surface_m2;
     public String etat;
 }
 

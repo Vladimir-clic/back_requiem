@@ -38,5 +38,11 @@ public class DemoRestController {
     public List<LegumeMongo> getAllLegumes(){
         return dao.findAllLegumes();
     }
+
+    // GET http://localhost:8080/legumes
+    @GetMapping("/legumes/nom/{nom}")
+    public List<LegumeMongo> getByNom(@PathVariable String nom){
+        return dao.findLegumeByNom(nom);
+    }
 }
 
