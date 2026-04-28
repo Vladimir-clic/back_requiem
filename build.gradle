@@ -18,8 +18,15 @@ repositories {
 
 dependencies {
     implementation platform('org.springframework.boot:spring-boot-dependencies:3.4.4')
+
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:3.4.4'
+    implementation 'org.springframework.boot:spring-boot-starter:3.4.4'
+
+    implementation project(':adapter-mongo')
 }
 
 test {

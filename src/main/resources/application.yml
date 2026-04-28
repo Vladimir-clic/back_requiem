@@ -1,0 +1,23 @@
+app:
+  persistence:
+    type: jpa
+
+spring:
+  data:
+    mongodb:
+      #connection à la bdd mongodb
+      uri: mongodb+srv://db_requiem:password2@clusterrequiem.x12wtf1.mongodb.net/Requiem
+
+      #en dessous : sert probablement a rien, je laisse parce que je suis parano
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_movie?useSSL=false&serverTimezone=UTC
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+
+debug: true
