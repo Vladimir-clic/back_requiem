@@ -34,7 +34,7 @@ public class DAOTableMongo {
     public List<UserMongo> findByPays(String pays) {
         return UserRepository.findByLocalisationPays(pays);
     }
-    public UserMongo findByEmailAndPassword(String email, String password) {
-        return UserRepository.findByEmailAndPassword(email, password);
+    public UserMongo findByEmailAndPassword(String email, String motdepasse) {
+        return UserRepository.findByEmailAndMotDePasse(email, motdepasse);
     }
 }
