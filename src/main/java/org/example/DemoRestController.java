@@ -1,10 +1,12 @@
 package org.example;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class DemoRestController {
@@ -43,6 +45,20 @@ public class DemoRestController {
     @GetMapping("/legumes/nom/{nom}")
     public List<LegumeMongo> findLegumeByNom(@PathVariable String nom){
         return dao.findLegumeByNom(nom);
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body){
+        String email = body.get("email");
+        String motdepasse = body.get("motdepasse");
+
+        UserMongo user = dao.findByEmailAndPassword(email, motdepasse);
+
+        if (user != null){
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(401).body("Email ou mot de passe incorrect");
+        }
     }
 }
 
