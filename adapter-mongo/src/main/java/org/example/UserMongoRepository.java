@@ -6,11 +6,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TableMongoRepository extends MongoRepository<TableMongo, Integer> {
+public interface UserMongoRepository extends MongoRepository<UserMongo, Integer> {
 
     // Spring génère automatiquement ces requêtes
-    List<TableMongo> findByNom(String nom);
-    List<TableMongo> findByLocalisationPays(String pays);
+    List<UserMongo> findByNom(String nom);
+    List<UserMongo> findByLocalisationPays(String pays);
 
-    List<TableMongo> findAll();
+    List<UserMongo> findAll();
 }
