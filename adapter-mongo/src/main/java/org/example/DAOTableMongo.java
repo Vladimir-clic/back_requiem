@@ -7,21 +7,21 @@ import java.util.List;
 @Service
 public class DAOTableMongo {
 
-    private final TableMongoRepository repository;
+    private final UserMongoRepository repository;
 
-    public DAOTableMongo(TableMongoRepository repository) {
+    public DAOTableMongo(UserMongoRepository repository) {
         this.repository = repository;
     }
 
-    public List<TableMongo> findAll() {
+    public List<UserMongo> findAll() {
         return repository.findAll();
     }
 
-    public List<TableMongo> findByNom(String nom) {
+    public List<UserMongo> findByNom(String nom) {
         return repository.findByNom(nom);
     }
 
-    public List<TableMongo> findByPays(String pays) {
+    public List<UserMongo> findByPays(String pays) {
         return repository.findByLocalisationPays(pays);
     }
 }
