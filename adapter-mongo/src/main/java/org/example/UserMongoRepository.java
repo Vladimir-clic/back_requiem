@@ -10,7 +10,7 @@ public interface UserMongoRepository extends MongoRepository<UserMongo, Integer>
 
     // Spring génère automatiquement ces requêtes
     List<UserMongo> findByNom(String nom);
-    List<UserMongo> findByLocalisationPays(String pays);
+
     List<UserMongo> findAll();
     UserMongo findByEmailAndMotDePasse(String email, String motdepasse);
 }

@@ -29,19 +29,13 @@ public class DemoRestController {
         return dao.findByNom(nom);
     }
 
-    // GET http://localhost:8080/users/pays/France
-    @GetMapping("/users/pays/{pays}")
-    public List<UserMongo> getByPays(@PathVariable String pays) {
-        return dao.findByPays(pays);
-    }
-
     // GET http://localhost:8080/legumes
     @GetMapping("/legumes")
     public List<LegumeMongo> getAllLegumes(){
         return dao.findAllLegumes();
     }
 
-    // GET http://localhost:8080/legumes
+    // GET http://localhost:8080/legumes/nom/Tomate
     @GetMapping("/legumes/nom/{nom}")
     public List<LegumeMongo> findLegumeByNom(@PathVariable String nom){
         return dao.findLegumeByNom(nom);
@@ -52,13 +46,19 @@ public class DemoRestController {
         String email = body.get("email");
         String motdepasse = body.get("motdepasse");
 
-        UserMongo user = dao.findByEmailAndPassword(email, motdepasse);
+        UserMongo user = dao.findByEmailAndMotDePasse(email, motdepasse);
 
         if (user != null){
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(401).body("Email ou mot de passe incorrect");
         }
+    }
+
+    // POST http://localhost:8080/legumes/new
+    @PostMapping("/legumes/new")
+    public LegumeMongo newLegume (@RequestBody LegumeMongo legumeMongo){
+        return dao.createLegume(legumeMongo);
     }
 }
 
