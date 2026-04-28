@@ -13,7 +13,7 @@ public class UserMongo {
     public String nom;
     public String prenom;
     public String email;
-    public String motdepasse;
+    public String motDePasse;
 
     public Date date_inscription;
 

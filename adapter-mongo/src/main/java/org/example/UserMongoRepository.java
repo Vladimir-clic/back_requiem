@@ -12,5 +12,6 @@ public interface UserMongoRepository extends MongoRepository<UserMongo, Integer>
     List<UserMongo> findByNom(String nom);
 
     List<UserMongo> findAll();
+
     UserMongo findByEmailAndMotDePasse(String email, String motdepasse);
 }
