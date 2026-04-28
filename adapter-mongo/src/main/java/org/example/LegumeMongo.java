@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Document(collection="plantes_races")
+@Document(collection="plants")
 public class LegumeMongo {
 
     @Id

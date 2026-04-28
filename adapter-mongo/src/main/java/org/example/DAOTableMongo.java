@@ -20,7 +20,7 @@ public class DAOTableMongo {
     }
 
     public List<LegumeMongo> findLegumeByNom(String nom) {
-        return LegumeRepository.findLegumeByNom(nom);
+        return LegumeRepository.findByNom(nom);
     }
 
     public List<UserMongo> findAll() {
