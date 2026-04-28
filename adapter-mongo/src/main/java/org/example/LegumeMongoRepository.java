@@ -1,4 +1,8 @@
 package org.example;
 
-public interface LegumeMongoRepository {
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.List;
+
+public interface LegumeMongoRepository extends MongoRepository<LegumeMongo, String> {
 }

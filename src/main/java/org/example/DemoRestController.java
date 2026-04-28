@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
 public class DemoRestController {
 
     private final DAOTableMongo dao;
@@ -17,20 +16,26 @@ public class DemoRestController {
     }
 
     // GET http://localhost:8080/users
-    @GetMapping
+    @GetMapping("/users")
     public List<UserMongo> getAll() {
         return dao.findAll();
     }
 
     // GET http://localhost:8080/users/nom/Martin
-    @GetMapping("/nom/{nom}")
+    @GetMapping("/users/nom/{nom}")
     public List<UserMongo> getByNom(@PathVariable String nom) {
         return dao.findByNom(nom);
     }
 
     // GET http://localhost:8080/users/pays/France
-    @GetMapping("/pays/{pays}")
+    @GetMapping("/users/pays/{pays}")
     public List<UserMongo> getByPays(@PathVariable String pays) {
         return dao.findByPays(pays);
     }
+
+    @GetMapping("/legumes")
+    public List<LegumeMongo> getAllLegumes(){
+        return dao.findAllLegumes();
+    }
 }
+

@@ -1,9 +1,11 @@
 package org.example;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@Document(collection="plantes_races")
 public class LegumeMongo {
 
     @Id
