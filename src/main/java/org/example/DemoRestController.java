@@ -33,6 +33,7 @@ public class DemoRestController {
         return dao.findByPays(pays);
     }
 
+    // GET http://localhost:8080/legumes
     @GetMapping("/legumes")
     public List<LegumeMongo> getAllLegumes(){
         return dao.findAllLegumes();
