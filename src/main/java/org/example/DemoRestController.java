@@ -27,11 +27,6 @@ public class DemoRestController {
         return dao.findByNom(nom);
     }
 
-    // GET http://localhost:8080/users/pays/France
-    @GetMapping("/users/pays/{pays}")
-    public List<UserMongo> getByPays(@PathVariable String pays) {
-        return dao.findByPays(pays);
-    }
 
     // GET http://localhost:8080/legumes
     @GetMapping("/legumes")
@@ -39,10 +34,16 @@ public class DemoRestController {
         return dao.findAllLegumes();
     }
 
-    // GET http://localhost:8080/legumes
+    // GET http://localhost:8080/legumes/nom/Tomate
     @GetMapping("/legumes/nom/{nom}")
     public List<LegumeMongo> findLegumeByNom(@PathVariable String nom){
         return dao.findLegumeByNom(nom);
+    }
+
+    // POST http://localhost:8080/legumes/new
+    @PostMapping("/legumes/new")
+    public LegumeMongo newLegume (@RequestBody LegumeMongo legumeMongo){
+        return dao.createLegume(legumeMongo);
     }
 }
 
