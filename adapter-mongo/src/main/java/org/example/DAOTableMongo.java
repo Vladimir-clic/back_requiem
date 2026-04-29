@@ -12,12 +12,12 @@ public class DAOTableMongo {
     private final UserMongoRepository UserRepository;
     private final LegumeMongoRepository LegumeRepository;
 
-    public DAOTableMongo( UserMongoRepository userRepository, LegumeMongoRepository legumeRepository) {
+    public DAOTableMongo(UserMongoRepository userRepository, LegumeMongoRepository legumeRepository) {
         UserRepository = userRepository;
         LegumeRepository = legumeRepository;
     }
 
-    public List<LegumeMongo> findAllLegumes(){
+    public List<LegumeMongo> findAllLegumes() {
         return LegumeRepository.findAll();
     }
 
@@ -41,8 +41,8 @@ public class DAOTableMongo {
 
             // Mapping et sauvegarde
             LegumeMongo newLegume = new LegumeMongo();
-            newLegume.id   = newId;
-            newLegume.nom  = legume.nom;
+            newLegume.id = newId;
+            newLegume.nom = legume.nom;
             newLegume.type = legume.type;
             newLegume.saisons = legume.saisons;
             newLegume.croissance_jours = legume.croissance_jours;
@@ -66,7 +66,7 @@ public class DAOTableMongo {
             }
 
             // Mise à jour et sauvegarde
-            existing.nom   = legume.nom;
+            existing.nom = legume.nom;
             existing.type = legume.type;
             existing.saisons = legume.saisons;
             existing.croissance_jours = legume.croissance_jours;
@@ -79,7 +79,7 @@ public class DAOTableMongo {
         }
     }
 
-    public List<UserMongo> findAllUsers(){
+    public List<UserMongo> findAllUsers() {
         return UserRepository.findAll();
     }
 
@@ -89,5 +89,17 @@ public class DAOTableMongo {
 
     public UserMongo findByEmailAndMotdepasse(String email, String motdepasse) {
         return UserRepository.findByEmailAndMotdepasse(email, motdepasse);
+    }
+
+    public UserMongo createUser(UserMongo user) {
+        // Vérifie si l'email existe déjà
+        List<UserMongo> users = UserRepository.findAll();
+        for (UserMongo existing : users) {
+            if (Objects.equals(existing.email, user.email)) {
+                return null; // email déjà utilisé
+            }
+        }
+        return UserRepository.save(user);
+
     }
 }

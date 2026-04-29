@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +48,7 @@ public class DemoRestController {
         return dao.findLegumeByNom(nom);
     }
 
+    // POST http://localhost:8080/users/login
     @PostMapping("/users/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body){
         String email = body.get("email");
@@ -65,10 +68,35 @@ public class DemoRestController {
         }
     }
 
-    // POST http://localhost:8080/legumes/new
-    @PostMapping("/legumes/new")
-    public LegumeMongo newLegume (@RequestBody LegumeMongo legumeMongo){
-        return dao.createLegume(legumeMongo);
-    }
-}
+    // POST http://localhost:8080/users/register
+    @PostMapping("/users/register")
+    public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
+        UserMongo newUser = new UserMongo();
+        newUser.email = body.get("email");
+        newUser.motdepasse = body.get("motdepasse");
+        newUser.nom = body.get("nom");
+        newUser.prenom = body.get("prenom");
+        newUser.adresse = body.get("adresse");
 
+        try {
+            newUser.date_inscription = new Date();
+
+            UserMongo saved = dao.createUser(newUser);
+
+            if (saved != null) {
+                return ResponseEntity.ok(saved);
+            } else {
+                return ResponseEntity.status(409).body("Email déjà utilisé");
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur register : " + e.getMessage());
+            return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
+        }
+    }
+
+        // POST http://localhost:8080/legumes/new
+        @PostMapping("/legumes/new")
+        public LegumeMongo newLegume (@RequestBody LegumeMongo legumeMongo){
+            return dao.createLegume(legumeMongo);
+        }
+    }

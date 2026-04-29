@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserMongoRepository extends MongoRepository<UserMongo, Integer> {
+public interface UserMongoRepository extends MongoRepository<UserMongo, String> {
 
     // Spring génère automatiquement ces requêtes
     List<UserMongo> findByNom(String nom);

@@ -1,15 +1,17 @@
 package org.example;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
 @Document(collection = "users_infos")
+@TypeAlias("")
 public class UserMongo {
 
     @Id
-    public Integer id;
+    public String id;
 
     public String nom;
     public String prenom;
