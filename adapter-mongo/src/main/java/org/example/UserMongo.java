@@ -10,15 +10,13 @@ public class UserMongo {
 
     @Id
     public Integer id;
+
     public String nom;
     public String prenom;
     public String email;
-    public String motDePasse;
-
+    public String adresse;
+    public String motdepasse;
+    public String superficie_ha;
     public Date date_inscription;
 
-    public String adresse;
-
-    public Integer superficie_ha;
-    public String type;
 }

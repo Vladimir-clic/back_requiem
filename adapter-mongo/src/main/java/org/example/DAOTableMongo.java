@@ -12,8 +12,8 @@ public class DAOTableMongo {
     private final UserMongoRepository UserRepository;
     private final LegumeMongoRepository LegumeRepository;
 
-    public DAOTableMongo(UserMongoRepository UserRepository, UserMongoRepository userRepository, LegumeMongoRepository legumeRepository) {
-        this.UserRepository = userRepository;
+    public DAOTableMongo( UserMongoRepository userRepository, LegumeMongoRepository legumeRepository) {
+        UserRepository = userRepository;
         LegumeRepository = legumeRepository;
     }
 
@@ -79,7 +79,7 @@ public class DAOTableMongo {
         }
     }
 
-    public List<UserMongo> findAll() {
+    public List<UserMongo> findAllUsers(){
         return UserRepository.findAll();
     }
 
@@ -87,7 +87,7 @@ public class DAOTableMongo {
         return UserRepository.findByNom(nom);
     }
 
-    public UserMongo findByEmailAndMotDePasse(String email, String motdepasse) {
-        return UserRepository.findByEmailAndMotDePasse(email, motdepasse);
+    public UserMongo findByEmailAndMotdepasse(String email, String motdepasse) {
+        return UserRepository.findByEmailAndMotdepasse(email, motdepasse);
     }
 }

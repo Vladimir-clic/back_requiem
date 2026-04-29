@@ -19,8 +19,13 @@ public class DemoRestController {
 
     // GET http://localhost:8080/users
     @GetMapping("/users")
-    public List<UserMongo> getAll() {
-        return dao.findAll();
+    public List<UserMongo> getAllUsers() {
+        try {
+            return dao.findAllUsers();
+        } catch (Exception e) {
+            System.out.println("Erreur getAll : " + e.getMessage());
+            throw e;
+        }
     }
 
     // GET http://localhost:8080/users/nom/Martin
@@ -46,7 +51,12 @@ public class DemoRestController {
         String email = body.get("email");
         String motdepasse = body.get("motdepasse");
 
-        UserMongo user = dao.findByEmailAndMotDePasse(email, motdepasse);
+        System.out.println("Email reçu : " + email);
+        System.out.println("MDP reçu : " + motdepasse);
+
+        UserMongo user = dao.findByEmailAndMotdepasse(email, motdepasse);
+
+        System.out.println("User trouvé : " + user);
 
         if (user != null){
             return ResponseEntity.ok(user);
