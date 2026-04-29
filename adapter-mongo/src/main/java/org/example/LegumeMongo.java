@@ -14,7 +14,7 @@ public class LegumeMongo {
     public String type;
     public List<String> saisons;
     public int croissance_jours;
-    public String besoin_eau;
+    public List<String> besoin_eau;
     public String ensoleillement;
     public int rendement;
     public String image_url;

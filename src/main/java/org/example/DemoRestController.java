@@ -70,7 +70,7 @@ public class DemoRestController {
 
     // POST http://localhost:8080/users/register
     @PostMapping("/users/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> registerUser(@RequestBody Map<String, String> body) {
         UserMongo newUser = new UserMongo();
         newUser.email = body.get("email");
         newUser.motdepasse = body.get("motdepasse");
@@ -94,9 +94,33 @@ public class DemoRestController {
         }
     }
 
-        // POST http://localhost:8080/legumes/new
-        @PostMapping("/legumes/new")
-        public LegumeMongo newLegume (@RequestBody LegumeMongo legumeMongo){
-            return dao.createLegume(legumeMongo);
+    // POST http://localhost:8080/legumes/new
+    @PostMapping("/legumes/new")
+    public ResponseEntity<?> registerLegume(@RequestBody Map<String, Object> body) {
+
+        LegumeMongo newLegume = new LegumeMongo();
+        newLegume.nom = (String) body.get("nom");
+        newLegume.type = (String) body.get("type");
+        newLegume.saisons = (List<String>) body.get("saisons");
+        newLegume.croissance_jours = (Integer) body.get("croissance_jours");
+        newLegume.ensoleillement = (String) body.get("ensoleillement");
+        newLegume.besoin_eau = (List<String>) body.get("besoin_eau");
+        newLegume.rendement = (Integer) body.get("rendement");
+        newLegume.image_url = (String) body.get("image");
+
+        try {
+            //newLegume.date_inscription = new Date();
+
+            LegumeMongo saved = dao.createLegume(newLegume);
+
+            if (saved != null) {
+                return ResponseEntity.ok(saved);
+            } else {
+                return ResponseEntity.status(409).body("Légume déjà existant");
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur register : " + e.getMessage());
+            return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
         }
+    }
     }
