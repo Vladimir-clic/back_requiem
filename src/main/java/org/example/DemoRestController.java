@@ -1,6 +1,7 @@
 package org.example;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import java.util.Map;
 @RestController
 public class DemoRestController {
 
+    @Autowired
     private final DAOTableMongo dao;
 
     public DemoRestController(DAOTableMongo dao) {
@@ -108,8 +110,16 @@ public class DemoRestController {
         newLegume.rendement = (Integer) body.get("rendement");
         newLegume.image_url = (String) body.get("image");
 
+        //work in progress
+
+        List<LegumeMongo> legumesMongo = dao.findAllLegumes();
+
         try {
-            //newLegume.date_inscription = new Date();
+            for (LegumeMongo legumeMongo : legumesMongo){
+                if (legumeMongo.nom.equals(newLegume.nom)){
+                    return ResponseEntity.status(409).body("Le légume " + legumeMongo.nom + " existe déjà.");
+                }
+            }
 
             LegumeMongo saved = dao.createLegume(newLegume);
 
