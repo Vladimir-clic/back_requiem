@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -144,4 +147,61 @@ public class DemoRestController {
             return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
         }
     }
+
+    // POST http://localhost:8080/analyze/{user_id}/{legume_id}
+    @PostMapping("/analyze/{user_id}/{legume_id}")
+    public ResponseEntity<?> analyzePlant(
+            @PathVariable String user_id,
+            @PathVariable String legume_id,
+            @RequestBody Map<String, Object> capteurs) {
+        try {
+            // Récupère le légume depuis MongoDB
+            List<LegumeMongo> legumes = dao.findAllLegumes();
+            LegumeMongo legume = legumes.stream()
+                    .filter(l -> l.id.equals(legume_id))
+                    .findFirst()
+                    .orElse(null);
+
+            if (legume == null) {
+                return ResponseEntity.status(404).body("Légume introuvable");
+            }
+
+            // Construit le body pour Django
+            Map<String, Object> djangoBody = Map.of(
+                    "plant", Map.of(
+                            "nom", legume.nom,
+                            "type", legume.type,
+                            "besoin_eau", legume.besoin_eau,
+                            "ensoleillement", legume.ensoleillement,
+                            "saison", legume.saisons,
+                            "croissance_jours", legume.croissance_jours
+                    ),
+                    "plants_user", Map.of(
+                            "date_plantation", "2026-03-01",
+                            "surface_m2", 10,
+                            "etat", "en_croissance"
+                    ),
+                    "capteurs", capteurs
+            );
+
+            // Appelle Django IA
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(djangoBody, headers);
+
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    "http://10.30.2.249/api/analyze/",
+                    request,
+                    Map.class
+            );
+
+            return ResponseEntity.ok(response.getBody());
+
+        } catch (Exception e) {
+            System.out.println("Erreur analyze : " + e.getMessage());
+            return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
+        }
+    }
 }
+
