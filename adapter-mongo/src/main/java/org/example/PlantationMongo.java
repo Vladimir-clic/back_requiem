@@ -13,10 +13,7 @@ public class PlantationMongo {
     @Id
     public String id;
 
-    @DBRef
     public String user_id;
-
-    @DBRef
     public String plante_id;
 
     public Date date_plantation;

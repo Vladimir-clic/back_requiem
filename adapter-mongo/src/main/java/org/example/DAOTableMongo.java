@@ -5,16 +5,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class DAOTableMongo {
 
     private final UserMongoRepository UserRepository;
     private final LegumeMongoRepository LegumeRepository;
+    private final PlantationMongoRepository PlantationRepository;
 
-    public DAOTableMongo(UserMongoRepository userRepository, LegumeMongoRepository legumeRepository) {
+    public DAOTableMongo(UserMongoRepository userRepository, LegumeMongoRepository legumeRepository, PlantationMongoRepository plantationRepository) {
         UserRepository = userRepository;
         LegumeRepository = legumeRepository;
+        PlantationRepository = plantationRepository;
     }
 
     public List<LegumeMongo> findAllLegumes() {
@@ -58,5 +61,15 @@ public class DAOTableMongo {
             }
         }
         return LegumeRepository.save(legume);
+    }
+
+    public List<LegumeMongo> findLegumesByUserId(String user_id) {
+        List<PlantationMongo> plantations = PlantationRepository.findByUser_id(user_id);
+
+        List<String> legumeIds = plantations.stream()
+                .map(p -> p.plante_id)
+                .collect(Collectors.toList());
+
+        return LegumeRepository.findAllById(legumeIds);
     }
 }

@@ -40,19 +40,19 @@ public class DemoRestController {
 
     // GET http://localhost:8080/legumes
     @GetMapping("/legumes")
-    public List<LegumeMongo> getAllLegumes(){
+    public List<LegumeMongo> getAllLegumes() {
         return dao.findAllLegumes();
     }
 
     // GET http://localhost:8080/legumes/nom/Tomate
     @GetMapping("/legumes/nom/{nom}")
-    public List<LegumeMongo> findLegumeByNom(@PathVariable String nom){
+    public List<LegumeMongo> findLegumeByNom(@PathVariable String nom) {
         return dao.findLegumeByNom(nom);
     }
 
     // POST http://localhost:8080/users/login
     @PostMapping("/users/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body){
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         String motdepasse = body.get("motdepasse");
 
@@ -63,7 +63,7 @@ public class DemoRestController {
 
         System.out.println("User trouvé : " + user);
 
-        if (user != null){
+        if (user != null) {
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(401).body("Email ou mot de passe incorrect");
@@ -115,8 +115,8 @@ public class DemoRestController {
         List<LegumeMongo> legumesMongo = dao.findAllLegumes();
 
         try {
-            for (LegumeMongo legumeMongo : legumesMongo){
-                if (legumeMongo.nom.equals(newLegume.nom)){
+            for (LegumeMongo legumeMongo : legumesMongo) {
+                if (legumeMongo.nom.equals(newLegume.nom)) {
                     return ResponseEntity.status(409).body("Le légume " + legumeMongo.nom + " existe déjà.");
                 }
             }
@@ -133,4 +133,15 @@ public class DemoRestController {
             return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
         }
     }
+
+    @GetMapping("/inventaire/users/{user_id}")
+    public ResponseEntity<?> getLegumesByUser(@PathVariable String user_id) {
+        try {
+            List<LegumeMongo> legumes = dao.findLegumesByUserId(user_id);
+            return ResponseEntity.ok(legumes);
+        } catch (Exception e) {
+            System.out.println("Erreur getLegumesByUser : " + e.getMessage());
+            return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
+        }
     }
+}
