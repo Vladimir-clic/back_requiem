@@ -172,6 +172,21 @@ public class DemoRestController {
         return ResponseEntity.ok(plantation);
     }
 
+    // POST http://localhost:8080/edit_plantation/{plantation_id}
+    @PostMapping("/edit_plantation/{plantation_id}")
+    public ResponseEntity<?> updatePlantation(@PathVariable String plantation_id, @RequestBody Map<String, Object> body) {
+        try {
+            PlantationMongo updated = dao.updatePlantation(plantation_id, body);
+            if (updated != null) {
+                return ResponseEntity.ok(updated);
+            } else {
+                return ResponseEntity.status(404).body("Plantation non trouvée");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
+        }
+    }
+
     // POST http://localhost:8080/analyze/{user_id}/{legume_id}
     @PostMapping("/analyze/{user_id}/{legume_id}")
     public ResponseEntity<?> analyzePlant(

@@ -7,6 +7,7 @@ public class PlantationDetailMongo {
 
 
     public String id;
+    public String plantation_id;
     public String nom;
     public String type;
     public List<String> saisons;

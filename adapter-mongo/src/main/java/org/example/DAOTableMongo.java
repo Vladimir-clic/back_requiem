@@ -3,10 +3,8 @@ package org.example;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,6 +72,7 @@ public class DAOTableMongo {
             if (legume != null) {
                 PlantationDetailMongo detail = new PlantationDetailMongo();
                 detail.id = legume.id;
+                detail.plantation_id = plantation.id;
                 detail.nom = legume.nom;
                 detail.type = legume.type;
                 detail.saisons = legume.saisons;
@@ -92,6 +91,25 @@ public class DAOTableMongo {
     }
 
         public PlantationMongo savePlantation(PlantationMongo plantation) {
+        return PlantationRepository.save(plantation);
+    }
+
+    public PlantationMongo updatePlantation(String plantation_id, Map<String, Object> body) {
+        PlantationMongo plantation = PlantationRepository.findById(plantation_id).orElse(null);
+        if (plantation == null) return null;
+
+        if (body.containsKey("surface_m2")) plantation.surface_m2 = (Integer) body.get("surface_m2");
+        if (body.containsKey("etat")) plantation.etat = (String) body.get("etat");
+        if (body.containsKey("date_plantation")) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                sdf.setTimeZone(TimeZone.getTimeZone("Europe.Paris"));
+                plantation.date_plantation = sdf.parse((String) body.get("date_plantation"));
+            } catch (Exception e) {
+                System.out.println("Erreur date : " + e.getMessage());
+            }
+        }
+
         return PlantationRepository.save(plantation);
     }
 }
