@@ -28,6 +28,27 @@ public class DAOTableMongo {
         return LegumeRepository.findByNom(nom);
     }
 
+    public PlantationDetailMongo findPlantationById(String plantation_id) {
+        PlantationMongo plantation = PlantationRepository.findById(plantation_id).orElse(null);
+        if (plantation == null) return null;
+
+        LegumeMongo legume = LegumeRepository.findById(plantation.plante_id).orElse(null);
+        if (legume == null) return null;
+
+        PlantationDetailMongo detail = new PlantationDetailMongo();
+        detail.plantation_id = plantation.id;
+        detail.id = legume.id;
+        detail.nom = legume.nom;
+        detail.surface_m2 = plantation.surface_m2;
+        detail.etat = plantation.etat;
+        detail.date_plantation = plantation.date_plantation;
+        detail.image_url = legume.image_url;
+        detail.saisons = legume.saisons;
+        detail.croissance_jours = legume.croissance_jours;
+        detail.rendement = legume.rendement;
+
+        return detail;
+    }
 
     public List<UserMongo> findAllUsers() {
         return UserRepository.findAll();
@@ -112,4 +133,5 @@ public class DAOTableMongo {
 
         return PlantationRepository.save(plantation);
     }
+    
 }

@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class DemoRestController {
@@ -148,6 +149,21 @@ public class DemoRestController {
             return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
         }
     }
+
+    @GetMapping("/plantation/{plantation_id}")
+    public ResponseEntity<?> getPlantationById(@PathVariable String plantation_id) {
+        try {
+            PlantationDetailMongo detail = dao.findPlantationById(plantation_id);
+            if (detail != null) {
+                return ResponseEntity.ok(detail);
+            } else {
+                return ResponseEntity.status(404).body("Plantation non trouvée");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
+        }
+    }
+
     // POST http://localhost:8080/add_plantation/users/{user_id}
     @PostMapping("/add_plantation/users/{user_id}")
     public ResponseEntity<?> addPlantation(@PathVariable String user_id, @RequestBody Map<String, Object> body) {
