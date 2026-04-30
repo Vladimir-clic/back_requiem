@@ -2,6 +2,8 @@ package org.example;
 
 
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -63,13 +65,33 @@ public class DAOTableMongo {
         return LegumeRepository.save(legume);
     }
 
-    public List<LegumeMongo> findLegumesByUserId(String user_id) {
+    public List<PlantationDetailMongo> findLegumesByUserId(String user_id) {
         List<PlantationMongo> plantations = PlantationRepository.findByUser_id(user_id);
 
-        List<String> legumeIds = plantations.stream()
-                .map(p -> p.plante_id)
-                .collect(Collectors.toList());
+        List<PlantationDetailMongo> result = new ArrayList<>();
+        for (PlantationMongo plantation : plantations) {
+            LegumeMongo legume = LegumeRepository.findById(plantation.plante_id).orElse(null);
+            if (legume != null) {
+                PlantationDetailMongo detail = new PlantationDetailMongo();
+                detail.id = legume.id;
+                detail.nom = legume.nom;
+                detail.type = legume.type;
+                detail.saisons = legume.saisons;
+                detail.croissance_jours = legume.croissance_jours;
+                detail.besoin_eau = legume.besoin_eau;
+                detail.ensoleillement = legume.ensoleillement;
+                detail.rendement = legume.rendement;
+                detail.image_url = legume.image_url;
+                detail.date_plantation = plantation.date_plantation;
+                detail.surface_m2 = plantation.surface_m2;
+                detail.etat = plantation.etat;
+                result.add(detail);
+            }
+        }
+        return result;
+    }
 
-        return LegumeRepository.findAllById(legumeIds);
+        public PlantationMongo savePlantation(PlantationMongo plantation) {
+        return PlantationRepository.save(plantation);
     }
 }

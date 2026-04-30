@@ -137,15 +137,39 @@ public class DemoRestController {
         }
     }
 
+    // GET http://localhost:8080/inventaire/users/{user_id}
     @GetMapping("/inventaire/users/{user_id}")
     public ResponseEntity<?> getLegumesByUser(@PathVariable String user_id) {
         try {
-            List<LegumeMongo> legumes = dao.findLegumesByUserId(user_id);
+            List<PlantationDetailMongo> legumes = dao.findLegumesByUserId(user_id);
             return ResponseEntity.ok(legumes);
         } catch (Exception e) {
             System.out.println("Erreur getLegumesByUser : " + e.getMessage());
             return ResponseEntity.status(500).body("Erreur : " + e.getMessage());
         }
+    }
+    // POST http://localhost:8080/add_plantation/users/{user_id}
+    @PostMapping("/add_plantation/users/{user_id}")
+    public ResponseEntity<?> addPlantation(@PathVariable String user_id, @RequestBody Map<String, Object> body) {
+        // Récupère la plante par son nom
+        String nom = (String) body.get("nom");
+        List<LegumeMongo> legumes = dao.findLegumeByNom(nom);
+
+        if (legumes.isEmpty()) {
+            return ResponseEntity.status(404).body("Plante non trouvée : " + nom);
+        }
+
+        LegumeMongo legume = legumes.get(0);
+
+        PlantationMongo plantation = new PlantationMongo();
+        plantation.user_id = user_id;
+        plantation.plante_id = legume.id;
+        plantation.surface_m2 = (Integer) body.get("surface_m2");
+        plantation.etat = "en cours";
+        plantation.date_plantation = new Date();
+
+        dao.savePlantation(plantation);
+        return ResponseEntity.ok(plantation);
     }
 
     // POST http://localhost:8080/analyze/{user_id}/{legume_id}
